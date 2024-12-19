@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import "../css/SaleChart.css"; // CSS for styling
+import "../css/SaleChart.css"; 
 
 const data = [
   { name: "19.12.2024", sales: 10 },

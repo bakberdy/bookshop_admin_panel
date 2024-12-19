@@ -68,7 +68,7 @@ body {
 
   .menu-icon {
     display: flex;
-    margin-left: 10px; /* Отступ слева */
+    margin-left: 10px; 
   }
 
   .app {
@@ -96,7 +96,7 @@ body {
 
   .menu-icon {
     display: flex;
-    margin-left: 10px; /* Отступ слева */
+    margin-left: 10px; 
   }
 
   .app-name {

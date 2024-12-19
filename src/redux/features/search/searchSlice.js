@@ -1,4 +1,3 @@
-// features/search/searchSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const searchSlice = createSlice({
@@ -8,10 +7,10 @@ const searchSlice = createSlice({
   },
   reducers: {
     setQuery: (state, action) => {
-      state.query = action.payload; // Обновляем строку поиска
+      state.query = action.payload; 
     },
     clearQuery: (state) => {
-      state.query = ''; // Очищаем строку поиска
+      state.query = '';
     },
   },
 });

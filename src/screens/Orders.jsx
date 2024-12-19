@@ -50,7 +50,7 @@ const Orders = () => {
           : order
       )
     );
-    setSelectedOrders([]); // Clear selections after status update
+    setSelectedOrders([]); 
   };
 
   return (

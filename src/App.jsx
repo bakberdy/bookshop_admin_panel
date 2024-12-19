@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 const App = () => {
   const handleLogout = () => {
     console.log("User logged out");
-    // Добавьте здесь логику выхода из системы
   };
 
   const dispatch = useDispatch();
