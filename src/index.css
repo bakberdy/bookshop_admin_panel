@@ -2,7 +2,118 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
-h1{
-    color: red;
+body {
+  font-family: "Rubik", serif;
+}
+
+.app {
+  display: flex;
+  flex-direction: row;
+}
+
+.app-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.app-bar {
+  display: flex;
+  width: 100%;
+  height: 100px;
+  align-items: center;
+  background-color: #fafafa;
+  justify-content: right;
+}
+
+.app-name {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  font-size: 30px;
+  font-weight: 600;
+  margin-left: 10px;
+  color: #003f62;
+}
+
+.home-page,
+.orders {
+  background-color: #c4c9e0;
+}
+
+.right-side{
+  display: flex;
+  flex-direction: row;
+}
+
+
+
+.menu-icon {
+  display: none;
+}
+
+.mobile-navigation-bar-closed {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .menu-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center; 
+  }
+
+  .menu-icon {
+    display: flex;
+    margin-left: 10px; /* Отступ слева */
+  }
+
+  .app {
+    flex-direction: row;
+  }
+
+  .app-bar {
+    height: 80px;
+    justify-content: space-between;
+  }
+
+  .app-name {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-container {
+    margin-right:50px;
+    width: 100%;
+    display: flex;
+    justify-content: left; 
+    align-items: center; 
+  }
+
+  .menu-icon {
+    display: flex;
+    margin-left: 10px; /* Отступ слева */
+  }
+
+  .app-name {
+    display: none;
+  }
+
+  .app-bar {
+    display: flex;
+    height: 60px;
+  }
+
+  .app-body {
+    padding: 10px;
+  }
+
+  .home-page,
+  .orders {
+    padding: 5px;
+  }
 }

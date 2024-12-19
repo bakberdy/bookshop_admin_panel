@@ -1,8 +1,13 @@
 import React from 'react'
+import SaleChart from '../components/SaleChart'
+import Bestsellers from '../components/Bestsellers'
 
 const Home = () => {
   return (
-    <div><h1>HHHHHHHHHHHHHHHHHHHHH</h1></div>
+    <div className='home-page'>
+      <SaleChart />
+      <Bestsellers/>
+    </div>
   )
 }
 

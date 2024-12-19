@@ -7,15 +7,17 @@ import App from './App';
 import Products from './screens/Products';
 import Orders from './screens/Orders';
 import Users from './screens/Users';
+import { Provider } from 'react-redux'; 
+import { store } from './redux/store';
 
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '',
     element: <App />,
     children: [
       {
-        path: '/home',
+        path: '/',
         element: <Home />,
       },
       {
@@ -38,6 +40,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}> {/* Оборачиваем приложение в Provider */}
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
