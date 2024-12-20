@@ -2,8 +2,8 @@ class Book {
   constructor({
     bookId,
     title,
-    author,
-    category,
+    authorId,
+    categoryId,
     price,
     discount,
     stockQuantity,
@@ -16,8 +16,8 @@ class Book {
   }) {
     this.bookId = bookId;
     this.title = title;
-    this.author = author;
-    this.category = category;
+    this.authorId = authorId;
+    this.categoryId = categoryId;
     this.price = price;
     this.discount = discount;
     this.stockQuantity = stockQuantity;
@@ -33,8 +33,8 @@ class Book {
     return {
       bookId: this.bookId,
       title: this.title,
-      author: this.author,
-      category: this.category,
+      authorId: this.authorId,
+      categoryId: this.categoryId,
       price: this.price,
       discount: this.discount,
       stockQuantity: this.stockQuantity,
@@ -51,8 +51,8 @@ class Book {
     return new Book(
       json.bookId,
       json.title,
-      json.author,
-      json.category,
+      json.authorId,
+      json.categoryId,
       json.price,
       json.discount,
       json.stockQuantity,

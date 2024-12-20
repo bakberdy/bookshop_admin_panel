@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const BookCard = ({ book }) => {
   return (
     <div className="">
-        <Link key={book.id} to="/add-details">
+        <Link key={book.id} to="/edit-details">
 
     <div
       key={book.bookId}
@@ -20,10 +20,10 @@ const BookCard = ({ book }) => {
           {book.title}
         </h2>
         <p className="product-author text-sm text-gray-600 mb-2">
-          Author: {book.author.name}
+          Author: {book.authorId}
         </p>
         <p className="product-category text-sm text-gray-600 mb-2">
-          Category: {book.category.name}
+          Category: {book.categoryId}
         </p>
         <p className="product-description text-sm text-gray-600 mb-2">
           {book.description}

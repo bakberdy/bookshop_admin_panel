@@ -10,8 +10,9 @@ import Users from './screens/Users';
 import { Provider } from 'react-redux'; 
 import { store } from './redux/store';
 import NewProductAdding from './screens/NewProductAdding';
-import AddDetails from './screens/AddDetails';
 import Login from './screens/Login';
+import EditProductDetails from './screens/EditProductDetails';
+import User from './screens/User';
 
 
 const router = createBrowserRouter([
@@ -40,9 +41,10 @@ const router = createBrowserRouter([
         element: <NewProductAdding />
       },
       {
-        path: '/add-details',
-        element: <AddDetails />
+        path: '/edit-details',
+        element: <EditProductDetails />
       },
+      { path: '/users/:userId', element: <User /> },
       
     ]
   },

@@ -1,6 +1,6 @@
 import React from "react";
 
-const InputField = ({ label, type = "text", placeholder = "" }) => {
+const InputField = ({ label, type = "text", placeholder = "", onChange}) => {
   return (
     <div className="flex flex-col w-48">
       <label
@@ -10,6 +10,7 @@ const InputField = ({ label, type = "text", placeholder = "" }) => {
         {label}
       </label>
       <input
+      onChange={onChange}
         id={label}
         name={label}
         type={type}
