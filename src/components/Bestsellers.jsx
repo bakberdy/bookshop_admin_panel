@@ -1,70 +1,70 @@
 import React from "react";
 import "../css/Bestsellers.css";
-import { Link } from "react-router-dom";
+import Book from '../entities/Book'
+import BookCard from "./BookCard";
 
 const initialData = [
-  {
-    id: 1,
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    price: "$10.99",
-    sales: 120,
-    image:
-      "https://www.manga-news.com/public/images/series/classroom-for-heroes-1-doki.jpg",
-  },
-  {
-    id: 2,
-    title: "1984",
-    author: "George Orwell",
-    price: "$8.99",
-    sales: 200,
-    image:
-      "https://th.bing.com/th/id/OIP.jO8ukMZG1AmcHp7kqiPkwAHaK8?w=629&h=930&rs=1&pid=ImgDetMain",
-  },
-  {
-    id: 3,
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    price: "$12.99",
-    sales: 150,
-    image:
-      "https://i.pinimg.com/originals/04/a7/32/04a732d980310aa49cff48122f95c007.jpg",
-  },
-  {
-    id: 3,
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    price: "$12.99",
-    sales: 150,
-    image:
-      "https://i.pinimg.com/originals/04/a7/32/04a732d980310aa49cff48122f95c007.jpg",
-  },
+  new Book({
+    bookId: 1,
+    title: "JavaScript Mastery",
+    author: { authorId: 1, name: "John Doe" },
+    category: { categoryId: 2, name: "Programming" },
+    price: 29.99,
+    discount: 5.0,
+    stockQuantity: 100,
+    currency: { currencyCode: "USD", symbol: "$" },
+    description: "A comprehensive guide to mastering JavaScript.",
+    publishedYear: 2023,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    imageData:
+      "https://w0.peakpx.com/wallpaper/536/1014/HD-wallpaper-anime-landscape-school-girl-back-view-clouds-anime.jpg",
+  }),
+  new Book({
+    bookId: 2,
+    title: "Learn React",
+    author: { authorId: 2, name: "Jane Smith" },
+    category: { categoryId: 3, name: "Web Development" },
+    price: 39.99,
+    discount: 10.0,
+    stockQuantity: 50,
+    currency: { currencyCode: "USD", symbol: "$" },
+    description: "Everything you need to know to become a React expert.",
+    publishedYear: 2022,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    imageData:
+      "https://w0.peakpx.com/wallpaper/536/1014/HD-wallpaper-anime-landscape-school-girl-back-view-clouds-anime.jpg",
+  }),
+  new Book({
+    bookId: 3,
+    title: "Python for Data Science",
+    author: { authorId: 3, name: "Emily Johnson" },
+    category: { categoryId: 4, name: "Data Science" },
+    price: 49.99,
+    discount: 15.0,
+    stockQuantity: 25,
+    currency: { currencyCode: "USD", symbol: "$" },
+    description: "Master data science with Python programming.",
+    publishedYear: 2021,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    imageData:
+      "https://w0.peakpx.com/wallpaper/536/1014/HD-wallpaper-anime-landscape-school-girl-back-view-clouds-anime.jpg",
+  }),
+
 ];
 
 const Bestsellers = () => {
   return (
     <div className="bestsellers-container">
       <h1 className="bestsellers-title">Bestsellers Statistics</h1>
-      <div className="bestsellers-grid">
+      <div className="flex flex-col gap-10 p-5 md:flex-row">
         {initialData.map((book) => (
-          <Link key={book.id} to="/add-details">
-            <div key={book.id} className="bestseller-item">
-              <img
-                src={book.image}
-                alt={book.title}
-                className="bestseller-image"
-              />
-              <div className="bestseller-details">
-                <h2 className="bestseller-title">{book.title}</h2>
-                <p className="bestseller-author">by {book.author}</p>
-                <p className="bestseller-price">{book.price}</p>
-                <p className="bestseller-sales">Total Sales: {book.sales}</p>
-              </div>
-            </div>
-          </Link>
+          <BookCard book={book} />
         ))}
+        </div>
       </div>
-    </div>
   );
 };
 

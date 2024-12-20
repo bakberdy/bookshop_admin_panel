@@ -19,8 +19,8 @@ const SearchBar = () => {
     <div className="relative">
       {/* Search Bar */}
       <div className="flex justify-center items-center">
-        <div className="flex items-center border-2 border-blue-800 rounded-lg px-3 py-2 w-full max-w-[300px] sm:max-w-[200px]">
-          <FaSearch className="text-blue-800 text-lg mr-2" />
+        <div className="flex items-center border-2 border-[#003F62] rounded-lg px-3 py-2 w-full max-w-[300px] sm:max-w-[200px]">
+          <FaSearch className="text-[#003F62] text-lg mr-2" />
           <input
             type="text"
             value={query}

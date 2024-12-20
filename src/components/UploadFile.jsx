@@ -19,7 +19,7 @@ const UploadFile = ({
         <div className="flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={`${iconSize} fill-gray-600`}
+            className={`${iconSize} fill-[#003F62]`}
             viewBox="0 0 24 24"
           >
             <path
