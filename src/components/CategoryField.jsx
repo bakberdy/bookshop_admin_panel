@@ -9,18 +9,28 @@ const CategoryField = ({ label, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
 
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/admin/categories");
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }}
+  // Fetch categories on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/admin/categories");
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleInputChange = (e) => {
-    fetchCategories()
     const value = e.target.value;
     setQuery(value);
+
+    if (value.trim() === "") {
+      setFilteredCategories([]);
+      return;
+    }
 
     const results = categories.filter((category) =>
       category.name.toLowerCase().includes(value.toLowerCase())
@@ -32,10 +42,15 @@ const CategoryField = ({ label, onChange }) => {
     setSelectedCategory(category);
     setQuery("");
     setFilteredCategories([]);
-    onChange(category.id);
+    onChange(category);
   };
 
   const handleCreateCategory = async () => {
+    if (!newCategoryName.trim()) {
+      alert("Category name cannot be empty");
+      return;
+    }
+
     try {
       const newCategory = {
         name: newCategoryName,
@@ -60,7 +75,7 @@ const CategoryField = ({ label, onChange }) => {
         htmlFor={label}
         className="block mb-1 text-sm font-bold text-gray-700"
       >
-        Category
+        {label}
       </label>
       {selectedCategory ? (
         <div className="w-full h-11 px-4 bg-gray-100 rounded-md border-2 border-gray-300 text-base text-gray-900 flex items-center justify-between">
@@ -84,7 +99,10 @@ const CategoryField = ({ label, onChange }) => {
       )}
       <div className="mt-2">
         {query && !selectedCategory && (
-          <div className="border border-gray-300 rounded-md p-2 bg-white shadow-sm">
+          <div
+            className="border border-gray-300 rounded-md p-2 bg-white shadow-sm"
+            role="listbox"
+          >
             {filteredCategories.length > 0 ? (
               <ul className="space-y-1">
                 {filteredCategories.map((category) => (
@@ -92,6 +110,7 @@ const CategoryField = ({ label, onChange }) => {
                     key={category.id}
                     className="text-sm text-gray-800 cursor-pointer hover:bg-gray-100 p-1 rounded"
                     onClick={() => handleCategorySelect(category)}
+                    role="option"
                   >
                     {category.name}
                   </li>

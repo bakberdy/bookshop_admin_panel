@@ -20,6 +20,8 @@ const NewProductAdding = () => {
     description: "",
     publishedYear: "",
     imageData: null,
+    createdAt: Date.now().toString(),
+    updatedAt: Date.now().toString(),
   });
   const [error, setError] = useState("");
 
@@ -46,7 +48,7 @@ const NewProductAdding = () => {
       const payload = {
         title: bookWithTimestamps.title,
         authorId: bookWithTimestamps.authorId,
-        categoryId: "35",//bookWithTimestamps.categoryId,
+        categoryId: "35", //bookWithTimestamps.categoryId,
         price: bookWithTimestamps.price,
         discount: bookWithTimestamps.discount,
         stockQuantity: bookWithTimestamps.stockQuantity,
@@ -55,10 +57,13 @@ const NewProductAdding = () => {
         imageUrl: bookWithTimestamps.imageData,
       };
 
-      const response = await axios.post("http://localhost:8080/api/admin/books", payload);
+      const response = await axios.post(
+        "http://localhost:8080/api/admin/books",
+        payload
+      );
       console.log("Book saved successfully:", response.data);
 
-      navigate("/products"); // Redirect to /products on success
+      navigate("/products");
     } catch (error) {
       console.error("Error saving book:", error);
       setError("Failed to save the book. Please try again.");
@@ -69,7 +74,7 @@ const NewProductAdding = () => {
     <div className="p-6">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Add New Book</h1>
-        {error && <p className="text-red-500 mt-2">{error}</p>} {/* Error message */}
+        {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
       <div className="flex flex-col lg:flex-row gap-10">
         <div className="flex flex-col gap-4 w-full lg:w-1/2">
@@ -96,7 +101,12 @@ const NewProductAdding = () => {
               onChange={(e) => handleChange("title", e.target.value)}
             />
             <AuthorField onChange={(e) => handleChange("authorId", e)} />
-            <CategoryField onChange={(e) => handleChange("categoryId", e)} />
+            <CategoryField
+              onChange={(e) => {
+                handleChange("categoryId", e);
+                console.log("add page: " + e);
+              }}
+            />
             <InputField
               label="Price"
               type="number"
@@ -117,7 +127,9 @@ const NewProductAdding = () => {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label className="block text-gray-700 font-medium mb-2">Currency</label>
+            <label className="block text-gray-700 font-medium mb-2">
+              Currency
+            </label>
             <CurrencyDropdown
               onCurrencyChange={(currency) =>
                 setBookData((prevData) => ({
