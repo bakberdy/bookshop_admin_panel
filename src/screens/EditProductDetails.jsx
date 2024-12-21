@@ -1,10 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import UploadFile from "../components/UploadFile";
 import CurrencyDropdown from "../components/CurrencyDropdown";
+import AuthorField from "../components/AuthorField";
+import CategoryField from "../components/CategoryField";
 
 const EditProductDetails = ({ book }) => {
   const [bookData, setBookData] = useState({ ...book });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (field, value) => {
     setBookData((prevData) => ({
@@ -17,13 +22,34 @@ const EditProductDetails = ({ book }) => {
     handleChange("imageData", file);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const updatedAt = new Date().toISOString();
     const updatedBookData = {
       ...bookData,
       updatedAt,
+      imageUrl: bookData.imageData ? URL.createObjectURL(bookData.imageData) : "",
     };
-    console.log("Updated book data:", updatedBookData);
+
+    if (!bookData.categoryId) {
+      setError("Category ID is required to update the product.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/categories/${bookData.categoryId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedBookData),
+      });
+
+      if (response.ok) {
+        navigate("/products");
+      } else {
+        setError("Failed to update the product. Please try again.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -33,60 +59,56 @@ const EditProductDetails = ({ book }) => {
           Edit Product Details
         </h1>
       </div>
+      {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className="flex flex-col lg:flex-row gap-10">
         <div className="flex flex-col gap-4 w-full lg:w-1/2">
-        <img
-          src={
-            bookData.imageData
-              ? URL.createObjectURL(bookData.imageData)
-              : "https://cdn2.iconfinder.com/data/icons/picons-basic-3/57/basic3-099_cloud_upload-1024.png"
-          }
-          alt="Book Preview"
-          className="w-72 h-95 rounded-lg shadow-md mb-5"
-        />
+          <img
+            src={
+              bookData.imageData
+                ? URL.createObjectURL(bookData.imageData)
+                : "https://cdn2.iconfinder.com/data/icons/picons-basic-3/57/basic3-099_cloud_upload-1024.png"
+            }
+            alt="Book Preview"
+            className="w-72 h-95 rounded-lg shadow-md mb-5"
+          />
           <UploadFile
             labelText="Upload Product Image"
             onFileChange={(e) => handleFileChange(e.target.files[0])}
           />
         </div>
         <div className="w-full lg:w-1/2 flex flex-row gap-10">
-         <div className="flex flex-col gap-5">
-         <InputField
-            label="Product Name"
-            type="text"
-            value={bookData.title}
-            placeholder="Enter product name"
-            onChange={(e) => handleChange("title", e.target.value)}
-          />
-          <InputField
-            label="Category Name"
-            type="text"
-            value={bookData.category}
-            placeholder="Enter category name"
-            onChange={(e) => handleChange("category", e.target.value)}
-          />
-          <InputField
-            label="Sale Price"
-            type="number"
-            value={bookData.price}
-            placeholder="Enter sale price"
-            onChange={(e) => handleChange("price", e.target.value)}
-          />
-          <InputField
-            label="Discount"
-            type="number"
-            value={bookData.discount}
-            placeholder="Enter discount"
-            onChange={(e) => handleChange("discount", e.target.value)}
-          />
-          <InputField
-            label="Stock Quantity"
-            type="number"
-            value={bookData.stockQuantity}
-            placeholder="Enter stock quantity"
-            onChange={(e) => handleChange("stockQuantity", e.target.value)}
-          />
-         </div>
+          <div className="flex flex-col gap-5">
+            <InputField
+              label="Product Name"
+              type="text"
+              value={bookData.title}
+              placeholder="Enter product name"
+              onChange={(e) => handleChange("title", e.target.value)}
+            />
+            <AuthorField onChange={(e) => handleChange("authorId", e)} />
+            <CategoryField onChange={(e) => handleChange("categoryId", e)} />
+            <InputField
+              label="Sale Price"
+              type="number"
+              value={bookData.price}
+              placeholder="Enter sale price"
+              onChange={(e) => handleChange("price", e.target.value)}
+            />
+            <InputField
+              label="Discount"
+              type="number"
+              value={bookData.discount}
+              placeholder="Enter discount"
+              onChange={(e) => handleChange("discount", e.target.value)}
+            />
+            <InputField
+              label="Stock Quantity"
+              type="number"
+              value={bookData.stockQuantity}
+              placeholder="Enter stock quantity"
+              onChange={(e) => handleChange("stockQuantity", e.target.value)}
+            />
+          </div>
           <div className="flex flex-col gap-5">
             <InputField
               label="Description"

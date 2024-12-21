@@ -1,4 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDs-BX8Lon9BVFOO1TXrraoI4xJ95Rd1tU",
+  authDomain: "final-fron-7199f.firebaseapp.com",
+  projectId: "final-fron-7199f",
+  storageBucket: "final-fron-7199f.firebasestorage.app",
+  messagingSenderId: "160864198745",
+  appId: "1:160864198745:web:1eb4c7a77bb97398d11148",
+  measurementId: "G-2ZEXEEDRYS"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
 
 const UploadFile = ({
   labelText = "Click to upload image",
@@ -8,8 +24,33 @@ const UploadFile = ({
   width = "w-72",
   height = "h-48",
   iconSize = "h-20",
-  onFileChange,
+  onFileUpload
 }) => {
+  const [fileUrl, setFileUrl] = useState("");
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload a valid image file.");
+      return;
+    }
+
+    const storageRef = ref(storage, `uploads/${file.name}`);
+
+    try {
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      setFileUrl(url);
+      if (onFileUpload) onFileUpload(url);
+      alert("File uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading file: ", error);
+      alert("Error uploading file.");
+    }
+  };
+
   return (
     <div>
       <label
@@ -38,9 +79,13 @@ const UploadFile = ({
           type="file"
           id="file"
           className="hidden"
-          onChange={onFileChange}
+          onChange={handleFileChange}
+          accept="image/*"
         />
       </label>
+      {fileUrl && (
+        <p className="mt-4 text-sm text-green-600">Uploaded File URL: <a href={fileUrl} target="_blank" rel="noopener noreferrer">{fileUrl}</a></p>
+      )}
     </div>
   );
 };

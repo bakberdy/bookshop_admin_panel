@@ -1,14 +1,18 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CurrencyDropdown from "../components/CurrencyDropdown";
 import InputField from "../components/InputField";
 import UploadFile from "../components/UploadFile";
+import AuthorField from "../components/AuthorField";
+import CategoryField from "../components/CategoryField";
+import axios from "axios";
 
 const NewProductAdding = () => {
+  const navigate = useNavigate();
   const [bookData, setBookData] = useState({
-    bookId: "",
     title: "",
-    author: "",
-    category: "",
+    authorId: "",
+    categoryId: "",
     price: "",
     discount: "",
     stockQuantity: "",
@@ -17,6 +21,7 @@ const NewProductAdding = () => {
     publishedYear: "",
     imageData: null,
   });
+  const [error, setError] = useState("");
 
   const handleChange = (field, value) => {
     setBookData((prevData) => ({
@@ -25,32 +30,53 @@ const NewProductAdding = () => {
     }));
   };
 
-  const handleFileChange = (file) => {
-    handleChange("imageData", file);
+  const handleFileChange = (url) => {
+    handleChange("imageData", url);
   };
 
-  const handleSubmit = () => {
-    const currentDate = new Date().toISOString();
-    const bookWithTimestamps = {
-      ...bookData,
-      createdAt: currentDate,
-      updatedAt: currentDate,
-    };
-    console.log("Book data to save:", bookWithTimestamps);
+  const handleSubmit = async () => {
+    try {
+      const currentDate = new Date().toISOString();
+      const bookWithTimestamps = {
+        ...bookData,
+        createdAt: currentDate,
+        updatedAt: currentDate,
+      };
+
+      const payload = {
+        title: bookWithTimestamps.title,
+        authorId: bookWithTimestamps.authorId,
+        categoryId: "35",//bookWithTimestamps.categoryId,
+        price: bookWithTimestamps.price,
+        discount: bookWithTimestamps.discount,
+        stockQuantity: bookWithTimestamps.stockQuantity,
+        description: bookWithTimestamps.description,
+        publishedYear: bookWithTimestamps.publishedYear,
+        imageUrl: bookWithTimestamps.imageData,
+      };
+
+      const response = await axios.post("http://localhost:8080/api/admin/books", payload);
+      console.log("Book saved successfully:", response.data);
+
+      navigate("/products"); // Redirect to /products on success
+    } catch (error) {
+      console.error("Error saving book:", error);
+      setError("Failed to save the book. Please try again.");
+    }
   };
 
   return (
     <div className="p-6">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Add New Book</h1>
+        {error && <p className="text-red-500 mt-2">{error}</p>} {/* Error message */}
       </div>
       <div className="flex flex-col lg:flex-row gap-10">
         <div className="flex flex-col gap-4 w-full lg:w-1/2">
           <img
-          
             src={
               bookData.imageData
-                ? URL.createObjectURL(bookData.imageData)
+                ? bookData.imageData
                 : "https://cdn2.iconfinder.com/data/icons/picons-basic-3/57/basic3-099_cloud_upload-1024.png"
             }
             alt="Book Preview"
@@ -58,35 +84,19 @@ const NewProductAdding = () => {
           />
           <UploadFile
             labelText="Upload Book Image"
-            onFileChange={(e) => handleFileChange(e.target.files[0])}
+            onFileUpload={(e) => handleFileChange(e)}
           />
         </div>
         <div className="w-full lg:w-1/2 flex flex-col lg:flex-row gap-10">
           <div className="mr-0 lg:mr-14 flex flex-col gap-2">
-            <InputField
-              label="Book ID"
-              type="text"
-              placeholder="Enter book ID"
-              onChange={(e) => handleChange("bookId", e.target.value)}
-            />
             <InputField
               label="Title"
               type="text"
               placeholder="Enter title"
               onChange={(e) => handleChange("title", e.target.value)}
             />
-            <InputField
-              label="Author"
-              type="text"
-              placeholder="Enter author"
-              onChange={(e) => handleChange("author", e.target.value)}
-            />
-            <InputField
-              label="Category"
-              type="text"
-              placeholder="Enter category"
-              onChange={(e) => handleChange("category", e.target.value)}
-            />
+            <AuthorField onChange={(e) => handleChange("authorId", e)} />
+            <CategoryField onChange={(e) => handleChange("categoryId", e)} />
             <InputField
               label="Price"
               type="number"
@@ -107,9 +117,7 @@ const NewProductAdding = () => {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label className="block text-gray-700 font-medium mb-2">
-              Currency
-            </label>
+            <label className="block text-gray-700 font-medium mb-2">Currency</label>
             <CurrencyDropdown
               onCurrencyChange={(currency) =>
                 setBookData((prevData) => ({
@@ -118,7 +126,6 @@ const NewProductAdding = () => {
                 }))
               }
             />
-
             <InputField
               label="Description"
               type="textarea"
@@ -137,10 +144,9 @@ const NewProductAdding = () => {
                 className="cursor-pointer transition-all text-black px-6 py-2 rounded-lg border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                 onClick={() =>
                   setBookData({
-                    bookId: "",
                     title: "",
-                    author: "",
-                    category: "",
+                    authorId: "",
+                    categoryId: "",
                     price: "",
                     discount: "",
                     stockQuantity: "",
